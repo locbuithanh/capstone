@@ -32,7 +32,24 @@ jobs:
           name: Create EKS Cluster
           command: |
             aws eks create-cluster --name mynameis-cluster --region us-east-1 --version 1.21 --nodegroup-name my-node-group --node-type t2.micro --nodes 3
+      
+      - run:
+          name: Wait for cluster creation
+          command: |
+            cluster_name="mynameis-cluster"
+            region="us-east-1"
 
+            status=""
+            while [ "$status" != "ACTIVE" ]; do
+              status=$(aws eks describe-cluster --name "$cluster_name" --region "$region" --query 'cluster.status' --output text)
+              if [ "$status" != "ACTIVE" ]; then
+                echo "Cluster status: $status. Waiting for cluster to become active..."
+                sleep 10
+              fi
+            done
+
+            echo "Cluster created successfully!"
+      
       - run:
           name: Install kubectl
           command: |
