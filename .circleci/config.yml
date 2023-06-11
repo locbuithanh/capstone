@@ -34,6 +34,19 @@ jobs:
             aws eks create-cluster --name mynameis-cluster --region us-east-1 --version 1.21 --nodegroup-name my-node-group --node-type t2.micro --nodes 3
 
       - run:
+          name: Install kubectl
+          command: |
+            sudo apt-get update && sudo apt-get install -y apt-transport-https
+            curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+            echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+            sudo apt-get update
+            sudo apt-get install -y kubectl
+            
+      - run:
+          name: Verify kubectl installation
+          command: kubectl version --client
+
+      - run:
           name: Deploy to Kubernetes Cluster
           command: |
             kubectl apply -f deployment/${CIRCLE_BRANCH}/deployment-${CIRCLE_BRANCH}.yml
