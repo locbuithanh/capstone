@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mynameis-green
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mynameis
+      env: green
+  template:
+    metadata:
+      labels:
+        app: mynameis
+        env: green
+    spec:
+      containers:
+        - name: mynameis
+          image: mynameis:latest
+          ports:
+            - containerPort: 80

@@ -1,0 +1,33 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.9
+
+    steps:
+      - checkout
+
+      - run:
+          name: Build and Push Docker Image
+          command: |
+            docker build -t mynameis .
+            docker tag mynameis locbuii/mynameis:latest
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker push locbuii/mynameis:latest
+
+      - run:
+          name: Create EKS Cluster
+          command: |
+            aws eks create-cluster --name mynameis-cluster --region us-east-1 --version 1.21 --nodegroup-name my-node-group --node-type t2.micro --nodes 3
+
+      - run:
+          name: Deploy to Kubernetes Cluster
+          command: |
+            kubectl apply -f deployment/${CIRCLE_BRANCH}/deployment-${CIRCLE_BRANCH}.yml
+            kubectl apply -f deployment/${CIRCLE_BRANCH}/service-${CIRCLE_BRANCH}.yml
+
+      - run:
+          name: Show the deployment result
+          command: |
+            kubectl get svc
+            kubectl get pods -o wide
