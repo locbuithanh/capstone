@@ -49,6 +49,7 @@ jobs:
       - run:
           name: Deploy to Kubernetes Cluster
           command: |
+            aws eks update-kubeconfig --name mynameis-cluster --region us-east-1
             kubectl apply -f deployment/${CIRCLE_BRANCH}/deployment-${CIRCLE_BRANCH}.yml
             kubectl apply -f deployment/${CIRCLE_BRANCH}/service-${CIRCLE_BRANCH}.yml
 
