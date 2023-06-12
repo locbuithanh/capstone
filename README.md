@@ -2,6 +2,9 @@
 
 This is a simple website project implement blue/green deployment using CircleCI, Kubernetes, AWS EKS to deploy.
 
+## Link to github repo:
+https://github.com/locbuithanh/capstone
+
 ## Install Kubectl
 curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
 chmod +x ./kubectl
