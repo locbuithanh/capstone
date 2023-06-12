@@ -33,11 +33,11 @@ jobs:
 
       - run:
           name: Create EKS cluster
-          command: eksctl create cluster --name my-cluster --region us-west-2 --node-type t2.micro --nodes-min 1 --nodes-max 3
+          command: eksctl create cluster --name mynameis-cluster --region us-west-2 --node-type t2.micro --nodes-min 1 --nodes-max 3
 
       - run:
           name: Configure kubectl
-          command: eksctl utils write-kubeconfig --name my-cluster --region us-west-2
+          command: eksctl utils write-kubeconfig --name mynameis-cluster --region us-west-2
       
       - run:
           name: Install kubectl
