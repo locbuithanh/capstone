@@ -8,6 +8,15 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 20.10.14
+
+      - run:
+          name: Install hadolint
+          command: sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-$(uname -s)-$(uname -m) && sudo chmod +x /bin/hadolint
+
+      - run:
+          name: Lint Dockerfile
+          command: hadolint Dockerfile
+          
       - run:
           name: Build and Push Docker Image
           command: |
@@ -18,37 +27,17 @@ jobs:
             docker push locbuii/mynameis:latest
             
       - run:
-          name: Install AWS CLI
+          name: Install eksctl
           command: |
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
+            sudo curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | sudo tar xz -C /usr/local/bin
 
       - run:
-          name: Verify AWS CLI installation
-          command: aws --version
+          name: Create EKS cluster
+          command: eksctl create cluster --name my-cluster --region us-west-2 --node-type t2.micro --nodes-min 1 --nodes-max 3
 
       - run:
-          name: Create EKS Cluster
-          command: |
-            aws eks create-cluster --name mynameis-cluster --region us-east-1 --version 1.21 --nodegroup-name my-node-group --node-type t2.micro --nodes 3
-      
-      - run:
-          name: Wait for cluster creation
-          command: |
-            cluster_name="mynameis-cluster"
-            region="us-east-1"
-
-            status=""
-            while [ "$status" != "ACTIVE" ]; do
-              status=$(aws eks describe-cluster --name "$cluster_name" --region "$region" --query 'cluster.status' --output text)
-              if [ "$status" != "ACTIVE" ]; then
-                echo "Cluster status: $status. Waiting for cluster to become active..."
-                sleep 10
-              fi
-            done
-
-            echo "Cluster created successfully!"
+          name: Configure kubectl
+          command: eksctl utils write-kubeconfig --name my-cluster --region us-west-2
       
       - run:
           name: Install kubectl
