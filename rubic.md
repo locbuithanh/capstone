@@ -1,4 +1,3 @@
-Project: Capstone- Cloud DevOps
 Step 1: Set Up Pipeline
 | Success Criteria | Specifications |
 | --- | ----------- |
