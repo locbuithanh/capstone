@@ -33,7 +33,7 @@ jobs:
 
       - run:
           name: Create EKS cluster
-          command: eksctl create cluster --name mynameis-cluster --region us-west-2 --node-type t2.micro --nodes-min 1 --nodes-max 3
+          command: eksctl create cluster --name mynameis-cluster --region us-west-2 --node-type t2.micro --nodes-min 1 --nodes-max 3 --version=1.27
 
       - run:
           name: Configure kubectl
@@ -50,7 +50,7 @@ jobs:
             
       - run:
           name: Verify kubectl installation
-          command: kubectl version --client
+          command: kubectl version
           
       - run:
           name: Install AWS CLI
