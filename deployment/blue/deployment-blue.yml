@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: mynameis
-          image: mynameis:latest
+          image: locbuii/mynameis:latest
           ports:
             - containerPort: 80

@@ -3,10 +3,10 @@
 This is a simple website project implement blue/green deployment using CircleCI, Kubernetes, AWS EKS to deploy.
 
 ## Add Environment variables to circleci to authenticate AWS and Docker
-AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY
-DOCKER_USERNAME
-DOCKER_PASSWORD
+AWS_ACCESS_KEY_ID  
+AWS_SECRET_ACCESS_KEY\n
+DOCKER_USERNAME  
+DOCKER_PASSWORD  
 
 
 ## Link to github repo:
