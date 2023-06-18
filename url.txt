@@ -1,2 +1,5 @@
 Link to github:
 https://github.com/locbuithanh/capstone
+
+LoadBalancer:
+ab467d3d5c64d4b309df0bf66a3055cb-1801000083.us-west-2.elb.amazonaws.com
